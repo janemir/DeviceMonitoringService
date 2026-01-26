@@ -1,0 +1,37 @@
+<div class="device-list">
+  <h2>Devices List</h2>
+  
+  <button (click)="addTestDevice()">Add Test Device</button>
+  <button (click)="loadDevices()">Refresh</button>
+  
+  <div *ngIf="loading">Loading devices...</div>
+  
+  <table *ngIf="!loading && devices.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User Name</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Version</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let device of devices">
+        <td>{{device.id}}</td>
+        <td>{{device.name}}</td>
+        <td>{{device.startTime | date:'short'}}</td>
+        <td>{{device.endTime | date:'short'}}</td>
+        <td>{{device.version}}</td>
+        <td>
+          <a [routerLink]="['/device', device.id]">View Details</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div *ngIf="!loading && devices.length === 0">
+    No devices found.
+  </div>
+</div>
