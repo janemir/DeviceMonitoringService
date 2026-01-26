@@ -1,16 +1,25 @@
 <div class="device-list">
-  <h2>Devices List</h2>
+  <h2>Devices <span class="badge">{{devices.length}}</span></h2>
   
-  <button (click)="addTestDevice()">Add Test Device</button>
-  <button (click)="loadDevices()">Refresh</button>
+  <div class="controls">
+    <button (click)="addTestDevice()">
+      <span>+</span> Add Test Device
+    </button>
+    <button (click)="loadDevices()" class="secondary-btn">
+      🔄 Refresh
+    </button>
+  </div>
   
-  <div *ngIf="loading">Loading devices...</div>
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    Loading devices...
+  </div>
   
   <table *ngIf="!loading && devices.length > 0">
     <thead>
       <tr>
         <th>ID</th>
-        <th>User Name</th>
+        <th>User</th>
         <th>Start Time</th>
         <th>End Time</th>
         <th>Version</th>
@@ -19,19 +28,21 @@
     </thead>
     <tbody>
       <tr *ngFor="let device of devices">
-        <td>{{device.id}}</td>
+        <td><strong>{{device.id}}</strong></td>
         <td>{{device.name}}</td>
-        <td>{{device.startTime | date:'short'}}</td>
-        <td>{{device.endTime | date:'short'}}</td>
-        <td>{{device.version}}</td>
+        <td>{{device.startTime | date:'MMM d, HH:mm'}}</td>
+        <td>{{device.endTime | date:'MMM d, HH:mm'}}</td>
+        <td><span class="badge">{{device.version}}</span></td>
         <td>
-          <a [routerLink]="['/device', device.id]">View Details</a>
+          <a [routerLink]="['/device', device.id]" class="action-link">
+            View Details →
+          </a>
         </td>
       </tr>
     </tbody>
   </table>
   
-  <div *ngIf="!loading && devices.length === 0">
-    No devices found.
+  <div class="empty-state" *ngIf="!loading && devices.length === 0">
+    No devices found. Add your first device!
   </div>
 </div>
