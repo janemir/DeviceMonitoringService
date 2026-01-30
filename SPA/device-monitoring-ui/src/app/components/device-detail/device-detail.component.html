@@ -34,15 +34,14 @@
             <th>End Time</th>
             <th>User</th>
             <th>App Version</th>
-            <th>Duration</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let session of sessions">
             <td>{{session.startTime | date:'medium'}}</td>
             <td>{{session.endTime | date:'medium'}}</td>
+            <td>{{session.name}}</td>
             <td><span class="badge">{{session.version}}</span></td>
-            <td>{{calculateDuration(session.startTime, session.endTime)}}</td>
           </tr>
         </tbody>
       </table>
