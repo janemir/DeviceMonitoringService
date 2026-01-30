@@ -36,13 +36,12 @@ export class DeviceDetailComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading device:', error);
-        this.loadDeviceSessions(); // Все равно пытаемся загрузить сессии
+        this.loading = false;
       }
     });
   }
 
   loadDeviceSessions(): void {
-    // Загружаем сессии устройства
     this.deviceService.getDeviceSessions(this.deviceId).subscribe({
       next: (sessions) => {
         this.sessions = sessions;

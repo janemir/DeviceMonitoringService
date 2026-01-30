@@ -15,11 +15,11 @@ export class DeviceService {
     return this.http.get<Device[]>(this.apiUrl);
   }
 
+  getDeviceById(id: string): Observable<Device> {
+    return this.http.get<Device>(`${this.apiUrl}/${id}`);
+  }
+
   getDeviceSessions(deviceId: string): Observable<DeviceSession[]> {
     return this.http.get<DeviceSession[]>(`${this.apiUrl}/${deviceId}/stats`);
   }
-
-  getDeviceById(id: string): Observable<Device> {
-  return this.http.get<Device>(`${this.apiUrl}/${id}`);
-}
 }

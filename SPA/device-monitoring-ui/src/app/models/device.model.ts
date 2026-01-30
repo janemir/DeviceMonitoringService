@@ -7,7 +7,7 @@ export interface Device {
 export interface DeviceSession {
   id: string;
   name: string;
-  starttime: string;
-  endtime: string;
+  startTime: string;
+  endTime: string;
   version: string;
 }
