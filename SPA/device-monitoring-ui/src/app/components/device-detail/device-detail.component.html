@@ -6,8 +6,8 @@
     Loading device information...
   </div>
   
-  <div *ngIf="!loading && device">
-    <div class="device-info-card">
+  <div *ngIf="!loading">
+    <div class="device-info-card" *ngIf="device">
       <h3>📱 Device Information</h3>
       <div class="info-grid">
         <div class="info-item">
@@ -19,35 +19,34 @@
           <span>{{device.name}}</span>
         </div>
         <div class="info-item">
-          <strong>Start Time</strong>
-          <span>{{device.startTime | date:'medium'}}</span>
-        </div>
-        <div class="info-item">
-          <strong>End Time</strong>
-          <span>{{device.endTime | date:'medium'}}</span>
-        </div>
-        <div class="info-item">
           <strong>App Version</strong>
           <span class="badge">{{device.version}}</span>
         </div>
       </div>
     </div>
     
-    <div class="stats-card" *ngIf="stats">
-      <h3>📊 Usage Statistics</h3>
-      <div class="info-grid">
-        <div class="info-item">
-          <strong>Total Active Time</strong>
-          <span>{{stats.totalActiveTime}}</span>
-        </div>
-        <div class="info-item">
-          <strong>Last Version Used</strong>
-          <span>{{stats.lastVersion}}</span>
-        </div>
-        <div class="info-item">
-          <strong>Last Activity</strong>
-          <span>{{stats.lastActivity | date:'medium'}}</span>
-        </div>
+    <div class="sessions-card">
+      <h3>📊 Activity Sessions</h3>
+      <table *ngIf="sessions.length > 0">
+        <thead>
+          <tr>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>App Version</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let session of sessions">
+            <td>{{session.starttime | date:'medium'}}</td>
+            <td>{{session.endtime | date:'medium'}}</td>
+            <td><span class="badge">{{session.version}}</span></td>
+            <td>{{calculateDuration(session.starttime, session.endtime)}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-state" *ngIf="sessions.length === 0">
+        No activity sessions found for this device.
       </div>
     </div>
     
@@ -56,7 +55,7 @@
     </a>
   </div>
   
-  <div class="empty-state" *ngIf="!loading && !device">
-    Device not found
+  <div class="empty-state" *ngIf="!loading && !device && sessions.length === 0">
+    Device not found or has no data.
   </div>
 </div>

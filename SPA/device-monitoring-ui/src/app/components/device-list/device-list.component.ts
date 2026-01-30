@@ -30,9 +30,4 @@ export class DeviceListComponent implements OnInit {
       }
     });
   }
-
-  addTestDevice(): void {
-    this.deviceService.addTestDevice();
-    this.loadDevices(); // Перезагружаем список
-  }
 }

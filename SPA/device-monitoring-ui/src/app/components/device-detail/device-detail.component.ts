@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Device, DeviceStats } from '../../models/device.model';
+import { Device, DeviceSession } from '../../models/device.model';
 import { DeviceService } from '../../services/device.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DeviceService } from '../../services/device.service';
 })
 export class DeviceDetailComponent implements OnInit {
   device?: Device;
-  stats?: DeviceStats;
+  sessions: DeviceSession[] = [];
   loading = false;
   deviceId = '';
 
@@ -32,25 +32,35 @@ export class DeviceDetailComponent implements OnInit {
     this.deviceService.getDeviceById(this.deviceId).subscribe({
       next: (device) => {
         this.device = device;
-        this.loadStats();
+        this.loadDeviceSessions();
       },
       error: (error) => {
         console.error('Error loading device:', error);
+        this.loadDeviceSessions(); // Все равно пытаемся загрузить сессии
+      }
+    });
+  }
+
+  loadDeviceSessions(): void {
+    // Загружаем сессии устройства
+    this.deviceService.getDeviceSessions(this.deviceId).subscribe({
+      next: (sessions) => {
+        this.sessions = sessions;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading sessions:', error);
         this.loading = false;
       }
     });
   }
 
-  loadStats(): void {
-    this.deviceService.getDeviceStats(this.deviceId).subscribe({
-      next: (stats) => {
-        this.stats = stats;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading stats:', error);
-        this.loading = false;
-      }
-    });
+  calculateDuration(start: string, end: string): string {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffMs = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
   }
 }
